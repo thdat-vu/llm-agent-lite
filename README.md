@@ -1,6 +1,14 @@
 # llm-agent-lite
 
-A simple demo for an LLM chat agent using Google Gemini API.
+An interactive chat agent using Google Gemini API, similar to Gemini CLI.
+
+## Features
+
+- 🤖 **Interactive Chat**: Chat with Gemini AI in real-time
+- 💬 **Conversation History**: Maintains context throughout the session
+- 📝 **Command System**: Built-in commands for managing the chat
+- 🎨 **User-Friendly Interface**: Clean, emoji-enhanced interface
+- 🔄 **Session Management**: Clear history, view conversation, and more
 
 ## Setup
 
@@ -23,11 +31,47 @@ A simple demo for an LLM chat agent using Google Gemini API.
 
 ## Usage
 
-Run the agent:
+Start the interactive chat:
 ```bash
 python3 ai_agent.py
 ```
 
+Or run the demo script to see the chat agent in action:
+```bash
+python3 demo.py
+```
+
+### Commands
+
+Once in the chat interface, you can use these commands:
+
+- **Just type your message** - Chat with Gemini AI
+- `/help` - Show help information
+- `/clear` - Clear conversation history and start fresh
+- `/history` - View all messages in the current session
+- `/quit` - Exit the chat
+
+### Example Session
+
+```
+🤖 Gemini Chat Agent
+==================================================
+Type your message and press Enter to chat.
+Commands:
+  /help     - Show this help message
+  /clear    - Clear conversation history
+  /history  - Show conversation history
+  /quit     - Exit the chat
+==================================================
+
+👤 You: Hello! How are you today?
+🤖 Gemini: Hello! I'm doing well, thank you for asking. I'm ready to help you with any questions or tasks you might have. How can I assist you today?
+
+👤 You: Can you explain quantum computing in simple terms?
+🤖 Gemini: Sure! Quantum computing is like having a computer that can be in multiple states at once, rather than just 0 or 1 like regular computers...
+```
+
 ## Notes
 - Requires a Google Gemini API key. Get one from [Google AI Studio](https://aistudio.google.com/app/apikey).
-- The agent will print a response from the Gemini model.
+- The chat maintains conversation context throughout the session.
+- Use Ctrl+C to exit at any time.
