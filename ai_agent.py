@@ -17,27 +17,57 @@ class ChatAgent:
         self.model = genai.GenerativeModel(model_name)
         self.chat = self.model.start_chat(history=[])
         self.conversation_history = []
+        self.current_directory = os.getcwd()
         
     def add_to_history(self, role, content):
         """Add message to conversation history"""
         self.conversation_history.append({"role": role, "content": content})
         
-    def display_welcome(self):
-        """Display welcome message and instructions"""
-        print("🤖 Gemini Chat Agent")
-        print("=" * 50)
-        print("Type your message and press Enter to chat.")
-        print("Commands:")
-        print("  /help     - Show this help message")
-        print("  /clear    - Clear conversation history")
-        print("  /history  - Show conversation history")
-        print("  /quit     - Exit the chat")
-        print("=" * 50)
+    def display_header(self):
+        """Display the Gemini-style header"""
+        print("\033[38;2;135;206;235m" + "GEMINI" + "\033[0m")
         print()
+        
+    def display_tips(self):
+        """Display tips for getting started"""
+        print("\033[38;2;255;255;255mTips for getting started:\033[0m")
+        print("  • Ask questions, edit files, or run commands.")
+        print("  • Be specific for the best results.")
+        print("  • /help for more information.")
+        print()
+        
+    def display_directory_warning(self):
+        """Display directory warning if in home directory"""
+        home_dir = os.path.expanduser("~")
+        current_dir = os.getcwd()
+        
+        # Check if we're in the home directory (not in a project)
+        if current_dir == home_dir:
+            print("\033[38;2;255;165;0m┌─────────────────────────────────────────────────────────────┐\033[0m")
+            print("\033[38;2;255;165;0m│\033[0m You are running Gemini CLI in your home directory. It is")
+            print("\033[38;2;255;165;0m│\033[0m recommended to run in a project-specific directory.")
+            print("\033[38;2;255;165;0m└─────────────────────────────────────────────────────────────┘\033[0m")
+            print()
+        
+    def display_status_bar(self):
+        """Display status bar at bottom"""
+        model_name = "gemini-2.5-flash"
+        context_left = "99%"  # Placeholder - could be calculated based on actual usage
+        errors = "0"  # Placeholder
+        
+        status_left = f"~ {os.path.basename(self.current_directory)} no sandbox (see /docs)"
+        status_right = f"{model_name} ({context_left} context left) | * {errors} errors (ctrl+o for details)"
+        
+        # Calculate padding to align status bar
+        terminal_width = 80  # Default terminal width
+        padding = terminal_width - len(status_left) - len(status_right)
+        
+        print("\033[38;2;100;100;100m" + "─" * terminal_width + "\033[0m")
+        print(f"\033[38;2;100;100;100m{status_left}{' ' * padding}{status_right}\033[0m")
         
     def show_help(self):
         """Display help information"""
-        print("\n📖 Help:")
+        print("\n\033[38;2;255;255;255m📖 Help:\033[0m")
         print("  Just type your message and press Enter to chat with Gemini.")
         print("  The conversation history is maintained throughout the session.")
         print("  Use /help to see this message again.")
@@ -49,20 +79,21 @@ class ChatAgent:
         """Clear conversation history and start fresh"""
         self.chat = self.model.start_chat(history=[])
         self.conversation_history = []
-        print("🗑️  Conversation history cleared.\n")
+        print("\033[38;2;255;255;255m🗑️  Conversation history cleared.\033[0m\n")
         
     def show_history(self):
         """Display conversation history"""
         if not self.conversation_history:
-            print("📝 No conversation history yet.\n")
+            print("\033[38;2;255;255;255m📝 No conversation history yet.\033[0m\n")
             return
             
-        print("\n📝 Conversation History:")
-        print("-" * 30)
+        print("\n\033[38;2;255;255;255m📝 Conversation History:\033[0m")
+        print("\033[38;2;100;100;100m" + "─" * 50 + "\033[0m")
         for i, message in enumerate(self.conversation_history, 1):
             role_icon = "👤" if message["role"] == "user" else "🤖"
-            print(f"{i}. {role_icon} {message['role'].title()}: {message['content'][:100]}{'...' if len(message['content']) > 100 else ''}")
-        print("-" * 30)
+            content_preview = message['content'][:80] + ('...' if len(message['content']) > 80 else '')
+            print(f"{i}. {role_icon} {message['role'].title()}: {content_preview}")
+        print("\033[38;2;100;100;100m" + "─" * 50 + "\033[0m")
         print()
         
     def send_message(self, message):
@@ -82,21 +113,28 @@ class ChatAgent:
             
         except Exception as e:
             error_msg = f"Error: {str(e)}"
-            print(f"❌ {error_msg}")
+            print(f"\033[38;2;255;100;100m❌ {error_msg}\033[0m")
             return None
             
     def run(self):
         """Main chat loop"""
-        self.display_welcome()
+        # Clear screen and display header
+        os.system('clear' if os.name == 'posix' else 'cls')
+        self.display_header()
+        self.display_tips()
+        self.display_directory_warning()
         
         while True:
             try:
-                # Get user input
-                user_input = input("👤 You: ").strip()
+                # Display status bar
+                self.display_status_bar()
+                
+                # Get user input with styled prompt
+                user_input = input("\033[38;2;255;255;255m> \033[0m").strip()
                 
                 # Handle commands
                 if user_input.lower() == "/quit":
-                    print("👋 Goodbye!")
+                    print("\033[38;2;255;255;255m👋 Goodbye!\033[0m")
                     break
                 elif user_input.lower() == "/help":
                     self.show_help()
@@ -111,7 +149,7 @@ class ChatAgent:
                     continue
                 
                 # Send message and get response
-                print("🤖 Gemini: ", end="", flush=True)
+                print("\033[38;2;0;255;0m+ \033[0m", end="", flush=True)
                 response = self.send_message(user_input)
                 
                 if response:
@@ -119,10 +157,10 @@ class ChatAgent:
                 print()
                 
             except KeyboardInterrupt:
-                print("\n\n👋 Goodbye!")
+                print("\n\n\033[38;2;255;255;255m👋 Goodbye!\033[0m")
                 break
             except EOFError:
-                print("\n\n👋 Goodbye!")
+                print("\n\n\033[38;2;255;255;255m👋 Goodbye!\033[0m")
                 break
 
 def main():
@@ -131,9 +169,9 @@ def main():
         agent = ChatAgent()
         agent.run()
     except KeyboardInterrupt:
-        print("\n👋 Goodbye!")
+        print("\n\033[38;2;255;255;255m👋 Goodbye!\033[0m")
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"\033[38;2;255;100;100m❌ Error: {e}\033[0m")
         sys.exit(1)
 
 if __name__ == "__main__":

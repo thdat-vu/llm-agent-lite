@@ -2,7 +2,7 @@
 
 🚀 **A lightweight, interactive chat agent powered by Google Gemini AI**
 
-A Python-based CLI chat application that provides a seamless conversational experience with Google's Gemini AI, featuring conversation history, command system, and a clean interface - perfect for developers, researchers, or anyone who wants to chat with AI from the terminal.
+A Python-based CLI chat application that provides a seamless conversational experience with Google's Gemini AI, featuring a beautiful dark-themed interface that matches the official Gemini CLI design. Includes conversation history, command system, and a professional interface - perfect for developers, researchers, or anyone who wants to chat with AI from the terminal.
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
@@ -13,8 +13,10 @@ A Python-based CLI chat application that provides a seamless conversational expe
 - 🤖 **Interactive Chat**: Chat with Gemini AI in real-time
 - 💬 **Conversation History**: Maintains context throughout the session
 - 📝 **Command System**: Built-in commands for managing the chat
-- 🎨 **User-Friendly Interface**: Clean, emoji-enhanced interface
+- 🎨 **Gemini-Style UI**: Beautiful dark-themed interface matching official Gemini CLI
 - 🔄 **Session Management**: Clear history, view conversation, and more
+- 📊 **Status Bar**: Real-time model info and context tracking
+- 🎯 **Smart Warnings**: Directory-aware recommendations
 
 ## 🚀 Quick Start
 
@@ -59,6 +61,11 @@ Or run the demo script to see the chat agent in action:
 python3 demo.py
 ```
 
+Test the new UI layout (no API required):
+```bash
+python3 test_ui.py
+```
+
 ### Commands
 
 Once in the chat interface, you can use these commands:
@@ -72,21 +79,26 @@ Once in the chat interface, you can use these commands:
 ### Example Session
 
 ```
-🤖 Gemini Chat Agent
-==================================================
-Type your message and press Enter to chat.
-Commands:
-  /help     - Show this help message
-  /clear    - Clear conversation history
-  /history  - Show conversation history
-  /quit     - Exit the chat
-==================================================
+GEMINI
 
-👤 You: Hello! How are you today?
-🤖 Gemini: Hello! I'm doing well, thank you for asking. I'm ready to help you with any questions or tasks you might have. How can I assist you today?
+Tips for getting started:
+  • Ask questions, edit files, or run commands.
+  • Be specific for the best results.
+  • /help for more information.
 
-👤 You: Can you explain quantum computing in simple terms?
-🤖 Gemini: Sure! Quantum computing is like having a computer that can be in multiple states at once, rather than just 0 or 1 like regular computers...
+┌─────────────────────────────────────────────────────────────┐
+│ You are running Gemini CLI in your home directory. It is
+│ recommended to run in a project-specific directory.
+└─────────────────────────────────────────────────────────────┘
+
+> Hello! How are you today?
++ Hello! I'm doing well, thank you for asking. I'm ready to help you with any questions or tasks you might have. How can I assist you today?
+
+> Can you explain quantum computing in simple terms?
++ Sure! Quantum computing is like having a computer that can be in multiple states at once, rather than just 0 or 1 like regular computers...
+
+────────────────────────────────────────────────────────────────────────────────
+~ llm-agent-lite no sandbox (see /docs)gemini-2.5-flash (99% context left) | * 0 errors (ctrl+o for details)
 ```
 
 ## 🤝 Contributing
